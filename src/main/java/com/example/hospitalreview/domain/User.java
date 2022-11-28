@@ -1,12 +1,13 @@
 package com.example.hospitalreview.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+@Builder
 @AllArgsConstructor
 @Getter
 public class User {
