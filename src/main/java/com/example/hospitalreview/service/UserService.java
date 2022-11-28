@@ -18,8 +18,9 @@ public class UserService {
 
         // 중복되면 회원가입 불가능 exception발생
         userRepository.findByUserName(request.getUserName())
-                .ifPresent(user->new RuntimeException("해당 UserName은 이미 존재합니다."));
-
+                .ifPresent(user->{
+                    throw new RuntimeException("해당 UserName은 이미 존재합니다.");
+                });
 
         // 회원가입 .save()
         User savedUser = userRepository.save(request.toEntity());
