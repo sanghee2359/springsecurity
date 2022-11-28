@@ -14,7 +14,5 @@ public class Response<T> {
     }
     public static Response<Void> error(String resultCode){
         return new Response(resultCode, null);
-
-
     }
 }
