@@ -35,4 +35,18 @@ public class UserService {
                 .email(savedUser.getEmailAddress())
                 .build();
     }
+
+    public String login(String userName, String password) {
+        //userName 있는지 여부 확인
+        // 없다면 NOT-FOUND 에러
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(()->new HospitalReviewAppException(ErrorCode.NOT_FOUND,
+                        String.format("%s는 가입된 적이 없습니다.",userName)));
+        // password 일치 하는지 확인
+        if(!encoder.matches(password, user.getPassword())){
+            throw new HospitalReviewAppException(ErrorCode.INVALID_PASSWORD, String.format(("userName 또는 password가 잘못되었습니다.")));
+        }
+        // 두 가지 확인 도중 예외가 안났다면 token 발행
+        return "";
+    }
 }
