@@ -33,39 +33,37 @@ class UserControllerTest {
     ObjectMapper objectMapper;
     @MockBean
     UserService userService;
+    UserJoinRequest userJoinRequest = UserJoinRequest.builder()
+            .userName("kyeongrok")
+            .password("1q2w3e4r")
+            .email("oceanfog1@gmail.com")
+            .build();
 
     @Test
     @DisplayName("회원가입 성공")
     @WithMockUser
-    void join_success() throws  Exception {
-        UserJoinRequest userJoinRequest = UserJoinRequest.builder()
-                .userName("sanghee")
-                .password("sanghee065")
-                .email("sangheeEmail.com")
-                .build();
+    void join_success() throws Exception {
 
         when(userService.join(any())).thenReturn(mock(UserDto.class));
-        mockMvc.perform(post("/api/v1/users/join").with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(userJoinRequest)))
+
+        mockMvc.perform(post("/api/v1/users/join")
+                        .contentType(MediaType.APPLICATION_JSON).with(csrf())
+                        .content(objectMapper.writeValueAsBytes(userJoinRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("회원가입 실패-id 중복")
-    void join_fail() throws  Exception {
-        UserJoinRequest userJoinRequest = UserJoinRequest.builder()
-                .userName("sanghee")
-                .password("sanghee065")
-                .email("sangheeEmail.com")
-                .build();
+    @DisplayName("회원가입 실패")
+    @WithMockUser
+    void join_fail() throws Exception {
         when(userService.join(any())).thenThrow(new HospitalReviewAppException(ErrorCode.DUPLICATED_USER_NAME, ""));
 
-        mockMvc.perform(post("/api/v1/users/join").with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/users/join")
+                        .contentType(MediaType.APPLICATION_JSON).with(csrf())
                         .content(objectMapper.writeValueAsBytes(userJoinRequest)))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
+
 }
