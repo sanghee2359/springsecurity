@@ -6,6 +6,7 @@ import com.example.hospitalreview.domain.dto.UserJoinRequest;
 import com.example.hospitalreview.exception.ErrorCode;
 import com.example.hospitalreview.exception.HospitalReviewAppException;
 import com.example.hospitalreview.repository.UserRepository;
+import com.example.hospitalreview.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
