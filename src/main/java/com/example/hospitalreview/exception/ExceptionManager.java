@@ -6,8 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice // 복잡하다. userDto, JoinRequest에도 toEntity() 들어있고, Response도 추상화
 public class ExceptionManager {
+    @ExceptionHandler(HospitalReviewAppException.class)
+    public ResponseEntity<?> hospitalReviewAppExceptionHandler(HospitalReviewAppException e){
+        return ResponseEntity.status(e.getErrorCode().getStatus())
+                .body(Response.error(e.getErrorCode().name()));
+    }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
